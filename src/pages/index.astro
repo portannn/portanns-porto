@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Welcome from '../components/Welcome.astro';
+---
+
+<Base>
+  <main>
+    <Welcome />
+
+    <section id="about" class="flex min-h-dvh items-center justify-center px-4">
+      <h2 class="font-heading text-fg text-3xl">$ cat about.txt</h2>
+    </section>
+
+    <section id="projects" class="flex min-h-dvh items-center justify-center px-4">
+      <h2 class="font-heading text-fg text-3xl">$ ls projects/</h2>
+    </section>
+
+    <section id="skills" class="flex min-h-dvh items-center justify-center px-4">
+      <h2 class="font-heading text-fg text-3xl">$ skills --list</h2>
+    </section>
+
+    <section id="contact" class="flex min-h-dvh items-center justify-center px-4">
+      <h2 class="font-heading text-fg text-3xl">$ contact</h2>
+    </section>
+  </main>
+</Base>

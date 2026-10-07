@@ -1,0 +1,102 @@
+---
+import { site } from '../data/site';
+
+const ascii = `
+████████╗██████╗ ██╗███████╗████████╗ █████╗ ███╗   ██╗
+╚══██╔══╝██╔══██╗██║╚══███╔╝╚══██╔══╝██╔══██╗████╗  ██║
+   ██║   ██████╔╝██║  ███╔╝    ██║   ███████║██╔██╗ ██║
+   ██║   ██╔══██╗██║ ███╔╝     ██║   ██╔══██║██║╚██╗██║
+   ██║   ██║  ██║██║███████╗   ██║   ██║  ██║██║ ╚████║
+   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝
+                                                                 
+`.trim();
+---
+
+<section id="welcome" class="relative flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+  <div role="img" aria-label={site.name} class="ascii-wrap text-fg text-glow relative inline-block">
+    <pre class="ascii-anim hidden select-none whitespace-pre font-heading text-[clamp(0.5rem,2.3vw,1.4rem)] leading-tight sm:block" aria-hidden="true">{ascii}</pre>
+    <p class="ascii-anim font-heading text-6xl font-bold tracking-widest sm:hidden" aria-hidden="true">{site.name}</p>
+  </div>
+
+  <p class="text-fg-dim text-base sm:text-lg">
+    &gt; {site.role}<span class="cursor-blink">_</span>
+  </p>
+
+  <nav aria-label="Section navigation" class="flex flex-col gap-3 sm:flex-row sm:gap-4">
+    {
+      site.nav.map((item) => (
+        <a
+          href={item.href}
+          class="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:bg-fg focus-visible:text-bg block border px-5 py-2 text-base transition-colors"
+        >
+          [{item.key}] {item.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  <p class="text-fg-dim text-xs opacity-70 sm:text-sm">press 1-4 or click &middot; scroll &darr;</p>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .ascii-anim {
+      animation: ascii-flicker 6s infinite, ascii-glow 3s ease-in-out infinite;
+    }
+
+    .ascii-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, currentColor 45%, transparent) 50%, transparent 100%);
+      background-size: 100% 300%;
+      background-position: 0 -100%;
+      animation: ascii-scan 2.2s ease-out 1;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+  }
+
+  @keyframes ascii-flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    93% {
+      opacity: 0.78;
+    }
+    94% {
+      opacity: 1;
+    }
+    96% {
+      opacity: 0.85;
+    }
+    97% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes ascii-glow {
+    0%,
+    100% {
+      text-shadow: 0 0 6px currentColor;
+    }
+    50% {
+      text-shadow: 0 0 16px currentColor, 0 0 3px currentColor;
+    }
+  }
+
+  @keyframes ascii-scan {
+    0% {
+      background-position: 0 -100%;
+      opacity: 1;
+    }
+    100% {
+      background-position: 0 200%;
+      opacity: 0;
+    }
+  }
+</style>
