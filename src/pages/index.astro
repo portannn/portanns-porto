@@ -1,26 +1,84 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Welcome from '../components/Welcome.astro';
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site } from '../data/site';
+
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+const skillGroups = Object.entries(site.skills) as [string, string[]][];
 ---
 
 <Base>
   <main>
     <Welcome />
 
-    <section id="about" class="flex min-h-dvh items-center justify-center px-4">
-      <h2 class="font-heading text-fg text-3xl">$ cat about.txt</h2>
-    </section>
+    <Section id="about" command="cat about.txt">
+      {site.about.map((line) => <p>{line}</p>)}
+    </Section>
 
-    <section id="projects" class="flex min-h-dvh items-center justify-center px-4">
-      <h2 class="font-heading text-fg text-3xl">$ ls projects/</h2>
-    </section>
+    <Section id="projects" command="ls projects/">
+      {
+        projects.length > 0 ? (
+          <div class="grid gap-4 sm:grid-cols-2">
+            {projects.map((project) => (
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                tags={project.data.tags}
+                url={project.data.url}
+                repo={project.data.repo}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>no projects published yet &mdash; check back soon.</p>
+        )
+      }
+    </Section>
 
-    <section id="skills" class="flex min-h-dvh items-center justify-center px-4">
-      <h2 class="font-heading text-fg text-3xl">$ skills --list</h2>
-    </section>
+    <Section id="skills" command="skills --list">
+      <pre class="font-mono whitespace-pre-wrap">{
+        skillGroups
+          .map(([group, items], i) => {
+            const isLast = i === skillGroups.length - 1;
+            const branch = isLast ? '└── ' : '├── ';
+            return `${branch}${group}/\n${items
+              .map((item, j) => {
+                const itemLast = j === items.length - 1;
+                const prefix = isLast ? '    ' : '│   ';
+                return `${prefix}${itemLast ? '└── ' : '├── '}${item}`;
+              })
+              .join('\n')}`;
+          })
+          .join('\n')
+      }</pre>
+    </Section>
 
-    <section id="contact" class="flex min-h-dvh items-center justify-center px-4">
-      <h2 class="font-heading text-fg text-3xl">$ contact</h2>
-    </section>
+    <Section id="contact" command="contact">
+      <ul class="flex flex-col gap-2">
+        <li>
+          <span class="text-fg-dim">email:</span>{' '}
+          <a href={`mailto:${site.links.email}`} class="text-fg hover:text-glow underline">
+            {site.links.email}
+          </a>
+        </li>
+        <li>
+          <span class="text-fg-dim">github:</span>{' '}
+          <a href={site.links.github} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+            {site.links.github}
+          </a>
+        </li>
+        <li>
+          <span class="text-fg-dim">linkedin:</span>{' '}
+          <a href={site.links.linkedin} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+            {site.links.linkedin}
+          </a>
+        </li>
+      </ul>
+    </Section>
   </main>
 </Base>

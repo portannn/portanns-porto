@@ -11,9 +11,20 @@ export const site = {
     { key: '3', label: 'skills', href: '#skills' },
     { key: '4', label: 'contact', href: '#contact' }
   ],
+  about: [
+    "Hi! I'm Triztan, an aspiring developer based in Jakarta.",
+    'I spend most of my time around AI tooling and software engineering, turning rough ideas into working code.',
+    'I care about clean interfaces, fast feedback loops, and code that is easy to delete.',
+    "When I'm not coding, I'm probably reading about new tools or tinkering with a side project."
+  ],
+  skills: {
+    languages: ['PHP', 'JavaScript', 'Python', 'Java', 'HTML/CSS', 'SQL'],
+    frameworks: ['Next.js', 'Tailwind CSS', 'Node.js', 'Vue.js', 'Laravel'],
+    tools: ['Git', 'Docker', 'Vercel', 'Linux', 'Neovim']
+  },
   links: {
-    email: 'hello@example.com',
+    email: 'kingswata@gmail.com',
     github: 'https://github.com/portannn',
-    linkedin: 'https://linkedin.com/in/titan'
+    linkedin: 'https://linkedin.com/in/triztan-2005'
   }
 };
