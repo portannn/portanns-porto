@@ -35,25 +35,13 @@ const ascii = `
     }
   </nav>
 
-  <p class="text-fg-dim text-xs opacity-70 sm:text-sm">press 1-4 or click &middot; scroll &darr;</p>
+  <p class="text-fg-dim text-xs opacity-70 sm:text-sm">press 1-6 or click &middot; scroll &darr;</p>
 </section>
 
 <style>
   @media (prefers-reduced-motion: no-preference) {
     .ascii-anim {
       animation: ascii-flicker 6s infinite, ascii-glow 3s ease-in-out infinite;
-    }
-
-    .ascii-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, currentColor 45%, transparent) 50%, transparent 100%);
-      background-size: 100% 300%;
-      background-position: 0 -100%;
-      animation: ascii-scan 2.2s ease-out 1;
-      mix-blend-mode: screen;
-      pointer-events: none;
     }
   }
 
@@ -86,17 +74,6 @@ const ascii = `
     }
     50% {
       text-shadow: 0 0 16px currentColor, 0 0 3px currentColor;
-    }
-  }
-
-  @keyframes ascii-scan {
-    0% {
-      background-position: 0 -100%;
-      opacity: 1;
-    }
-    100% {
-      background-position: 0 200%;
-      opacity: 0;
     }
   }
 </style>

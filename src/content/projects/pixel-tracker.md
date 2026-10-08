@@ -7,7 +7,7 @@ tags:
   - htmx
 repo: https://github.com/portannn/pixel-tracker
 order: 2
-draft: false
+draft: true
 ---
 
 Placeholder project. Replace this entry with a real project when ready.

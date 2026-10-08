@@ -1,4 +1,6 @@
 ---
+import TerminalWindow from './TerminalWindow.astro';
+
 interface Props {
   title: string;
   description: string;
@@ -8,34 +10,39 @@ interface Props {
 }
 
 const { title, description, tags, url, repo } = Astro.props;
+const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
-<article class="border-fg-dim text-fg flex flex-col gap-3 border p-4 sm:p-5">
-  <h3 class="font-heading text-fg text-xl sm:text-2xl">{title}</h3>
-  <p class="text-fg-dim text-sm sm:text-base">{description}</p>
+<article class="h-full">
+  <TerminalWindow title={`~/projects/${slug}`}>
+    <h3 class="font-heading text-fg text-glow text-xl sm:text-2xl">
+      <span class="text-fg-dim" aria-hidden="true">&gt; </span>{title}
+    </h3>
+    <p class="text-fg-dim mt-2 text-sm sm:text-base">{description}</p>
 
-  <ul class="flex flex-wrap gap-2" aria-label="Technologies used">
+    <ul class="mt-3 flex flex-wrap gap-2" aria-label="Technologies used">
+      {
+        tags.map((tag) => (
+          <li class="border-fg-dim text-fg-dim border px-2 py-0.5 text-xs">{tag}</li>
+        ))
+      }
+    </ul>
+
     {
-      tags.map((tag) => (
-        <li class="border-fg-dim text-fg-dim border px-2 py-0.5 text-xs">{tag}</li>
-      ))
+      (url || repo) && (
+        <div class="mt-auto flex gap-4 pt-4 text-sm">
+          {url && (
+            <a href={url} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+              live &rarr;
+            </a>
+          )}
+          {repo && (
+            <a href={repo} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+              github &rarr;
+            </a>
+          )}
+        </div>
+      )
     }
-  </ul>
-
-  {
-    (url || repo) && (
-      <div class="flex gap-4 text-sm">
-        {url && (
-          <a href={url} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
-            live &rarr;
-          </a>
-        )}
-        {repo && (
-          <a href={repo} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
-            github &rarr;
-          </a>
-        )}
-      </div>
-    )
-  }
+  </TerminalWindow>
 </article>

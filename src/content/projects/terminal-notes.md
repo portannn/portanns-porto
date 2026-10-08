@@ -8,7 +8,7 @@ tags:
 url: https://example.com
 repo: https://github.com/portannn/terminal-notes
 order: 1
-draft: false
+draft: true
 ---
 
 Placeholder project. Replace this entry with a real project when ready.
