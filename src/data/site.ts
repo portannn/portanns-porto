@@ -7,9 +7,9 @@ export const site = {
   theme: 'green' as 'green' | 'amber',
   nav: [
     { key: '1', label: 'about', href: '#about' },
-    { key: '2', label: 'education', href: '#education' },
+    { key: '2', label: 'projects', href: '#projects' },
     { key: '3', label: 'experience', href: '#experience' },
-    { key: '4', label: 'projects', href: '#projects' },
+    { key: '4', label: 'education', href: '#education' },
     { key: '5', label: 'skills', href: '#skills' },
     { key: '6', label: 'contact', href: '#contact' }
   ],

@@ -24,26 +24,24 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
       {site.about.map((line) => <p>{line}</p>)}
     </Section>
 
-    <Section id="education" command="cat education.txt">
-      <div class="flex flex-col gap-8">
-        {
-          site.education.map((edu) => (
-            <TerminalWindow title={`~/education/${edu.school.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
-              <h3 class="font-heading text-fg text-glow text-xl sm:text-2xl">
-                <span class="text-fg-dim" aria-hidden="true">
-                  &gt;{' '}
-                </span>
-                {edu.school}
-                {edu.location && <span class="text-fg-dim text-base sm:text-lg"> &mdash; {edu.location}</span>}
-              </h3>
-              <p class="mt-2">{edu.degree}</p>
-              {edu.detail && <p>{edu.detail}</p>}
-              {edu.period && <p>{edu.period}</p>}
-              {edu.description && <p class="mt-3">{edu.description}</p>}
-            </TerminalWindow>
-          ))
-        }
-      </div>
+    <Section id="projects" command="ls personal-projects/">
+      {
+        projects.length > 0 ? (
+          <div class="grid gap-8 sm:grid-cols-2">
+            {projects.map((project) => (
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                tags={project.data.tags}
+                url={project.data.url}
+                repo={project.data.repo}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>no projects published yet &mdash; check back soon.</p>
+        )
+      }
     </Section>
 
     <Section id="experience" command="git log --experience">
@@ -77,24 +75,26 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
       </div>
     </Section>
 
-    <Section id="projects" command="ls personal-projects/">
-      {
-        projects.length > 0 ? (
-          <div class="grid gap-8 sm:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard
-                title={project.data.title}
-                description={project.data.description}
-                tags={project.data.tags}
-                url={project.data.url}
-                repo={project.data.repo}
-              />
-            ))}
-          </div>
-        ) : (
-          <p>no projects published yet &mdash; check back soon.</p>
-        )
-      }
+    <Section id="education" command="cat education.txt">
+      <div class="flex flex-col gap-8">
+        {
+          site.education.map((edu) => (
+            <TerminalWindow title={`~/education/${edu.school.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+              <h3 class="font-heading text-fg text-glow text-xl sm:text-2xl">
+                <span class="text-fg-dim" aria-hidden="true">
+                  &gt;{' '}
+                </span>
+                {edu.school}
+                {edu.location && <span class="text-fg-dim text-base sm:text-lg"> &mdash; {edu.location}</span>}
+              </h3>
+              <p class="mt-2">{edu.degree}</p>
+              {edu.detail && <p>{edu.detail}</p>}
+              {edu.period && <p>{edu.period}</p>}
+              {edu.description && <p class="mt-3">{edu.description}</p>}
+            </TerminalWindow>
+          ))
+        }
+      </div>
     </Section>
 
     <Section id="skills" command="skills --list">
