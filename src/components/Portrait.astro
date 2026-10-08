@@ -1,0 +1,39 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+---
+
+<div tabindex="0" class="portrait relative isolate size-52 overflow-hidden">
+  <img src={src} alt={alt} width="640" height="640" loading="lazy" decoding="async" class="size-full object-cover" />
+</div>
+
+<style>
+  .portrait img {
+    filter: grayscale(1) contrast(1.1) brightness(1.4);
+    transition: filter 0.4s ease;
+  }
+
+  .portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-fg);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .portrait:hover img,
+  .portrait:focus-visible img {
+    filter: none;
+  }
+
+  .portrait:hover::after,
+  .portrait:focus-visible::after {
+    opacity: 0;
+  }
+</style>

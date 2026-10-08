@@ -6,6 +6,7 @@ import Section from '../components/Section.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import TerminalWindow from '../components/TerminalWindow.astro';
 import ContactIcon from '../components/ContactIcon.astro';
+import Portrait from '../components/Portrait.astro';
 import KeyboardNav from '../components/KeyboardNav.svelte';
 import { site } from '../data/site';
 
@@ -21,7 +22,16 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
     <Welcome />
 
     <Section id="about" command="cat about.txt">
-      {site.about.map((line) => <p>{line}</p>)}
+      <div class="flex flex-col items-start gap-6 sm:flex-row sm:gap-8">
+        <div class="shrink-0">
+          <TerminalWindow title="~/me.jpg" flush>
+            <Portrait src="/me.webp" alt="Formal portrait of Triztan" />
+          </TerminalWindow>
+        </div>
+        <div class="flex flex-col gap-4">
+          {site.about.map((line) => <p>{line}</p>)}
+        </div>
+      </div>
     </Section>
 
     <Section id="projects" command="ls personal-projects/">
