@@ -5,6 +5,7 @@ import Welcome from '../components/Welcome.astro';
 import Section from '../components/Section.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import TerminalWindow from '../components/TerminalWindow.astro';
+import ContactIcon from '../components/ContactIcon.astro';
 import KeyboardNav from '../components/KeyboardNav.svelte';
 import { site } from '../data/site';
 
@@ -116,20 +117,20 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
 
     <Section id="contact" command="contact">
       <ul class="flex flex-col gap-2">
-        <li>
-          <span class="text-fg-dim">email:</span>{' '}
+        <li class="flex items-center gap-3">
+          <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="email" />email:</span>
           <a href={`mailto:${site.links.email}`} class="text-fg hover:text-glow underline">
             {site.links.email}
           </a>
         </li>
-        <li>
-          <span class="text-fg-dim">github:</span>{' '}
+        <li class="flex items-center gap-3">
+          <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="github" />github:</span>
           <a href={site.links.github} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
             {site.links.github}
           </a>
         </li>
-        <li>
-          <span class="text-fg-dim">linkedin:</span>{' '}
+        <li class="flex items-center gap-3">
+          <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="linkedin" />linkedin:</span>
           <a href={site.links.linkedin} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
             {site.links.linkedin}
           </a>
