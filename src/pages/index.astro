@@ -36,8 +36,8 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
                 {edu.location && <span class="text-fg-dim text-base sm:text-lg"> &mdash; {edu.location}</span>}
               </h3>
               <p class="mt-2">{edu.degree}</p>
-              {edu.detail && <p class="opacity-80">{edu.detail}</p>}
-              {edu.period && <p class="opacity-70">{edu.period}</p>}
+              {edu.detail && <p>{edu.detail}</p>}
+              {edu.period && <p>{edu.period}</p>}
               {edu.description && <p class="mt-3">{edu.description}</p>}
             </TerminalWindow>
           ))
@@ -58,7 +58,7 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
                 {exp.org && <span class="text-fg-dim"> @ {exp.org}</span>}
               </h3>
               {(exp.period || exp.location) && (
-                <p class="mt-2 opacity-70">{[exp.period, exp.location].filter(Boolean).join(' · ')}</p>
+                <p class="mt-2">{[exp.period, exp.location].filter(Boolean).join(' · ')}</p>
               )}
               <ul class="mt-3 flex list-none flex-col gap-2">
                 {exp.points.map((point) => (
