@@ -3,7 +3,7 @@ export const site = {
   tagline: 'building small, useful things for the web',
   role: 'ai & software engineering',
   description:
-    "TITAN's portfolio — a software developer building small, useful things for the web.",
+    "Triztan's portfolio, an aspiring ai & software engineer building things for the web.",
   theme: 'green' as 'green' | 'amber',
   nav: [
     { key: '1', label: 'about', href: '#about' },
