@@ -1,6 +1,6 @@
 ---
 title: Gymbro
-description: Fitness and lifestyle mobile app built by a 7-person Scrum team for a software project course. Every member owned one feature module end to end. I built the workout catalogue and discovery module, from database schema to Flutter screens.
+description: Fitness and lifestyle mobile app built by a 7-person Scrum team for a software project course. Every member owned one feature module end-to-end. I built the workout catalogue and discovery module, from database schema to Flutter screens.
 tags:
   - Flutter
   - Express.js

@@ -1,5 +1,5 @@
 export const site = {
-  name: 'TITAN',
+  name: 'Triztan',
   tagline: 'building small, useful things for the web',
   role: 'ai & software engineering',
   description:

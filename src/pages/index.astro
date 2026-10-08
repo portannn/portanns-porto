@@ -5,6 +5,7 @@ import Welcome from '../components/Welcome.astro';
 import Section from '../components/Section.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import TerminalWindow from '../components/TerminalWindow.astro';
+import KeyboardNav from '../components/KeyboardNav.svelte';
 import { site } from '../data/site';
 
 const allProjects = await getCollection('projects', ({ data }) => !data.draft);
@@ -15,6 +16,7 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
 
 <Base>
   <main>
+    <KeyboardNav client:load items={site.nav} />
     <Welcome />
 
     <Section id="about" command="cat about.txt">
