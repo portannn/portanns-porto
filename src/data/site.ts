@@ -55,6 +55,7 @@ export const site = {
     tools: ['Git', 'Docker', 'Vercel', 'Linux', 'Neovim']
   },
   links: {
+    cv: '/Triztan-Fairuz-CV.pdf',
     email: 'kingswata@gmail.com',
     github: 'https://github.com/portannn',
     linkedin: 'https://linkedin.com/in/triztan-2005'

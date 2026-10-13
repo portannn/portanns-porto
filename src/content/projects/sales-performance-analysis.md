@@ -1,5 +1,6 @@
 ---
 title: Sales Performance Analysis & Prediction
+shortTitle: Sales Analysis
 description: Data warehouse and BI course project on European sales data. A star-schema warehouse feeds 5 KPIs in a Looker Studio dashboard, plus K-Means country segmentation and sales regression. I wrote the report and did the clustering and segmentation KPI analysis.
 tags:
   - MySQL

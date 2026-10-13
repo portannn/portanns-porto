@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Welcome from '../components/Welcome.astro';
 import Section from '../components/Section.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import ProjectsShowcase from '../components/ProjectsShowcase.svelte';
 import TerminalWindow from '../components/TerminalWindow.astro';
 import ContactIcon from '../components/ContactIcon.astro';
 import Portrait from '../components/Portrait.astro';
@@ -24,14 +24,21 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
     <Welcome />
 
     <Section id="about" command="cat about.txt">
-      <div class="flex flex-col items-start gap-6 sm:flex-row sm:gap-8">
+      <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
         <div class="shrink-0">
           <TerminalWindow title="~/me.jpg" flush>
             <Portrait src="/me.webp" alt="Formal portrait of Triztan" />
           </TerminalWindow>
         </div>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 self-stretch">
           {site.about.map((line) => <p>{line}</p>)}
+          <a
+            href={site.links.cv}
+            download
+            class="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:bg-fg focus-visible:text-bg mt-2 inline-flex w-fit items-center gap-2 border px-4 py-2 text-sm transition-colors"
+          >
+            <span aria-hidden="true">$</span> ./download-cv.pdf
+          </a>
         </div>
       </div>
     </Section>
@@ -39,17 +46,18 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
     <Section id="projects" command="ls personal-projects/">
       {
         projects.length > 0 ? (
-          <div class="grid gap-8 sm:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard
-                title={project.data.title}
-                description={project.data.description}
-                tags={project.data.tags}
-                url={project.data.url}
-                repo={project.data.repo}
-              />
-            ))}
-          </div>
+          <ProjectsShowcase
+            client:load
+            projects={projects.map((project) => ({
+              slug: project.id,
+              title: project.data.title,
+              shortTitle: project.data.shortTitle ?? project.data.title,
+              description: project.data.description,
+              tags: project.data.tags,
+              url: project.data.url,
+              repo: project.data.repo
+            }))}
+          />
         ) : (
           <p>no projects published yet &mdash; check back soon.</p>
         )
