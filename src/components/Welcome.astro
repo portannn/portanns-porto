@@ -1,16 +1,9 @@
 ---
 import { site } from '../data/site';
+import { asciiName } from '../data/ascii';
 import ThemeToggle from './ThemeToggle.svelte';
 
-const ascii = `
-████████╗██████╗ ██╗███████╗████████╗ █████╗ ███╗   ██╗
-╚══██╔══╝██╔══██╗██║╚══███╔╝╚══██╔══╝██╔══██╗████╗  ██║
-   ██║   ██████╔╝██║  ███╔╝    ██║   ███████║██╔██╗ ██║
-   ██║   ██╔══██╗██║ ███╔╝     ██║   ██╔══██║██║╚██╗██║
-   ██║   ██║  ██║██║███████╗   ██║   ██║  ██║██║ ╚████║
-   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝
-                                                                 
-`.trim();
+const ascii = asciiName;
 ---
 
 <section id="welcome" class="relative flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-16 text-center">

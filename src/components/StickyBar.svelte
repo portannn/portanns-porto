@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { asciiName } from '../data/ascii';
   import ThemeToggle from './ThemeToggle.svelte';
 
   interface NavItem {
@@ -58,8 +59,11 @@
     ? 'translate-y-0'
     : '-translate-y-full'}"
 >
-  <div class="mx-auto flex max-w-3xl items-center gap-3 px-4 py-2">
-    <nav bind:this={navEl} aria-label="Section navigation" class="flex min-w-0 flex-1 gap-4 overflow-x-auto text-xs whitespace-nowrap sm:text-sm">
+  <div class="flex items-center gap-3 px-4 py-2 sm:gap-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+    <a href="#welcome" aria-label="Back to top" class="text-fg hidden shrink-0 justify-self-start lg:block">
+      <pre class="font-mono text-[6px] leading-none whitespace-pre select-none" aria-hidden="true">{asciiName}</pre>
+    </a>
+    <nav bind:this={navEl} aria-label="Section navigation" class="flex min-w-0 flex-1 gap-4 overflow-x-auto text-xs whitespace-nowrap sm:text-sm lg:flex-none lg:justify-center">
       {#each items as item}
         <a
           href={item.href}
@@ -70,6 +74,8 @@
         </a>
       {/each}
     </nav>
-    <ThemeToggle />
+    <div class="shrink-0 justify-self-end">
+      <ThemeToggle />
+    </div>
   </div>
 </header>
