@@ -13,8 +13,6 @@ import { site } from '../data/site';
 
 const allProjects = await getCollection('projects', ({ data }) => !data.draft);
 const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
-
-const skillGroups = Object.entries(site.skills) as [string, string[]][];
 ---
 
 <Base>
@@ -119,21 +117,69 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
 
     <Section id="skills" command="skills --list">
       <TerminalWindow title="~/skills">
-      <pre class="font-mono whitespace-pre-wrap">{
-        skillGroups
-          .map(([group, items], i) => {
-            const isLast = i === skillGroups.length - 1;
-            const branch = isLast ? '└── ' : '├── ';
-            return `${branch}${group}/\n${items
-              .map((item, j) => {
-                const itemLast = j === items.length - 1;
-                const prefix = isLast ? '    ' : '│   ';
-                return `${prefix}${itemLast ? '└── ' : '├── '}${item}`;
-              })
-              .join('\n')}`;
-          })
-          .join('\n')
-      }</pre>
+        <div class="grid gap-x-10 gap-y-6 lg:grid-cols-2">
+          {
+            site.skills.map((group) => (
+              <div>
+                <p class="text-fg font-bold">{group.group}/</p>
+                <ul class="mt-1">
+                  {group.items.map((item, i) => (
+                    <li class="pl-[4ch] -indent-[4ch]">
+                      <span aria-hidden="true" class="text-fg-dim">{i === group.items.length - 1 ? '└── ' : '├── '}</span>
+                      <span>{item.name}</span>
+                      {item.projects.length > 0 && (
+                        <span class="text-fg-dim text-xs sm:text-sm">
+                          {' '}<span aria-hidden="true">&rarr; </span>
+                          {item.projects.map((id, j) => (
+                            <>
+                              {j > 0 && ', '}
+                              <a href="#projects" data-project={id} class="hover:text-fg whitespace-nowrap underline">
+                                {site.projectLabels[id] ?? id}
+                              </a>
+                            </>
+                          ))}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="border-fg-dim mt-8 grid gap-x-10 gap-y-6 border-t pt-6 lg:grid-cols-2">
+          <div>
+            <p class="text-fg font-bold">certifications/</p>
+            <ul class="mt-1">
+              {
+                site.certifications.map((cert, i) => (
+                  <li class="flex gap-2">
+                    <span aria-hidden="true" class="text-fg-dim shrink-0">
+                      {i === site.certifications.length - 1 ? '└──' : '├──'}
+                    </span>
+                    <span>{cert}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div>
+            <p class="text-fg font-bold">languages/</p>
+            <ul class="mt-1">
+              {
+                site.languages.map((lang, i) => (
+                  <li class="flex gap-2">
+                    <span aria-hidden="true" class="text-fg-dim">
+                      {i === site.languages.length - 1 ? '└──' : '├──'}
+                    </span>
+                    <span>{lang}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
       </TerminalWindow>
     </Section>
 
@@ -163,3 +209,12 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
     </Section>
   </main>
 </Base>
+
+<script>
+  // a skill's project link asks the projects showcase to open that project
+  document.querySelectorAll<HTMLAnchorElement>('a[data-project]').forEach((link) => {
+    link.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('show-project', { detail: link.dataset.project }));
+    });
+  });
+</script>

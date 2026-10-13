@@ -63,7 +63,18 @@
       });
     }
   }
+
+  // a skill link elsewhere on the page can ask for a specific project to be shown
+  function onShowProject(event: Event) {
+    const id = (event as CustomEvent<string>).detail;
+    const index = projects.findIndex((p) => p.slug === id);
+    if (index === -1) return;
+    activeIndex = index;
+    goTo(index);
+  }
 </script>
+
+<svelte:window onshow-project={onShowProject} />
 
 {#snippet details(p: Project)}
   <h3 class="font-heading text-fg text-glow text-xl sm:text-2xl">

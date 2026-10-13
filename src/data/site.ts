@@ -49,11 +49,75 @@ export const site = {
     "When I'm not coding, I'm probably reading about new tools or tinkering with a side project.",
     "Feel free to check out my portfolio!"
   ],
-  skills: {
-    languages: ['PHP', 'JavaScript', 'Python', 'Java', 'HTML/CSS', 'SQL'],
-    frameworks: ['Next.js', 'Tailwind CSS', 'Node.js', 'Vue.js', 'Laravel'],
-    tools: ['Git', 'Docker', 'Vercel', 'Linux', 'Neovim']
-  },
+  // `projects` are content-collection ids, so each skill points at where it was actually used
+  skills: [
+    {
+      group: 'ai',
+      items: [
+        { name: 'RAG', projects: ['enterprise-rag-chatbot'] },
+        { name: 'LLM integration', projects: ['enterprise-rag-chatbot'] },
+        { name: 'LangChain', projects: ['enterprise-rag-chatbot'] },
+        { name: 'ChromaDB', projects: ['enterprise-rag-chatbot'] },
+        { name: 'Ollama', projects: ['enterprise-rag-chatbot'] }
+      ]
+    },
+    {
+      group: 'data',
+      items: [
+        { name: 'Python', projects: ['enterprise-rag-chatbot', 'sales-performance-analysis'] },
+        { name: 'SQL', projects: ['gymbro', 'sales-performance-analysis', 'enterprise-rag-chatbot'] },
+        { name: 'Pentaho (Kettle)', projects: ['sales-performance-analysis'] },
+        { name: 'Looker Studio', projects: ['sales-performance-analysis'] },
+        { name: 'K-Means / CRISP-DM', projects: ['sales-performance-analysis'] }
+      ]
+    },
+    {
+      group: 'development',
+      items: [
+        { name: 'FastAPI', projects: ['enterprise-rag-chatbot'] },
+        { name: 'Next.js', projects: ['enterprise-rag-chatbot'] },
+        { name: 'Express.js', projects: ['gymbro'] },
+        { name: 'Flutter', projects: ['gymbro'] },
+        { name: 'JavaScript', projects: ['coinpath'] },
+        { name: 'Firebase', projects: ['coinpath'] },
+        { name: 'REST APIs', projects: ['gymbro', 'enterprise-rag-chatbot'] }
+      ]
+    },
+    {
+      group: 'tools',
+      items: [
+        { name: 'Git / GitHub', projects: ['gymbro'] },
+        { name: 'Docker', projects: ['enterprise-rag-chatbot'] },
+        { name: 'Vercel', projects: ['coinpath'] },
+        { name: 'Linux', projects: [] },
+        { name: 'Neovim', projects: [] }
+      ]
+    },
+    {
+      group: 'also-familiar-with',
+      items: [
+        { name: 'PHP', projects: [] },
+        { name: 'Laravel', projects: [] },
+        { name: 'Java', projects: [] },
+        { name: 'Vue.js', projects: [] },
+        { name: 'Node.js', projects: [] },
+        { name: 'Tailwind CSS', projects: [] },
+        { name: 'HTML/CSS', projects: [] }
+      ]
+    }
+  ] as { group: string; items: { name: string; projects: string[] }[] }[],
+  projectLabels: {
+    'enterprise-rag-chatbot': 'rag-chatbot',
+    coinpath: 'coinpath',
+    gymbro: 'gymbro',
+    'sales-performance-analysis': 'sales-analysis'
+  } as Record<string, string>,
+  certifications: [
+    'IT Specialist - Data Analytics (PKSTI Bandung, 2026)',
+    'Mastering UI/UX (Consultee and Co., 2025)',
+    'Innovation in Marketing and Branding (Consultee and Co., 2025)'
+  ],
+  languages: ['Indonesian (native)', 'English'],
   links: {
     cv: '/Triztan-Fairuz-CV.pdf',
     email: 'kingswata@gmail.com',
