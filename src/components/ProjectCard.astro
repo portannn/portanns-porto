@@ -13,7 +13,7 @@ const { title, description, tags, url, repo } = Astro.props;
 const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
-<article class="h-full">
+<article class="h-full min-w-0">
   <TerminalWindow title={`~/projects/${slug}`}>
     <h3 class="font-heading text-fg text-glow text-xl sm:text-2xl">
       <span class="text-fg-dim" aria-hidden="true">&gt; </span>{title}

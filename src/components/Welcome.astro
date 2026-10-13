@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import ThemeToggle from './ThemeToggle.svelte';
 
 const ascii = `
 ████████╗██████╗ ██╗███████╗████████╗ █████╗ ███╗   ██╗
@@ -13,9 +14,11 @@ const ascii = `
 ---
 
 <section id="welcome" class="relative flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+  <div class="absolute top-4 right-4">
+    <ThemeToggle client:load />
+  </div>
   <div role="img" aria-label={site.name} class="ascii-wrap text-fg text-glow relative inline-block">
-    <pre class="ascii-anim hidden select-none whitespace-pre font-heading text-[clamp(0.5rem,2.3vw,1.4rem)] leading-tight sm:block" aria-hidden="true">{ascii}</pre>
-    <p class="ascii-anim font-heading text-6xl font-bold tracking-widest sm:hidden" aria-hidden="true">{site.name}</p>
+    <pre class="ascii-anim select-none whitespace-pre font-heading text-[clamp(0.4rem,2.6vw,1.4rem)] leading-tight" aria-hidden="true">{ascii}</pre>
   </div>
 
   <p class="text-fg-dim text-base sm:text-lg">

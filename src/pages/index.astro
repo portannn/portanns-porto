@@ -8,6 +8,7 @@ import TerminalWindow from '../components/TerminalWindow.astro';
 import ContactIcon from '../components/ContactIcon.astro';
 import Portrait from '../components/Portrait.astro';
 import KeyboardNav from '../components/KeyboardNav.svelte';
+import StickyBar from '../components/StickyBar.svelte';
 import { site } from '../data/site';
 
 const allProjects = await getCollection('projects', ({ data }) => !data.draft);
@@ -19,6 +20,7 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
 <Base>
   <main>
     <KeyboardNav client:load items={site.nav} />
+    <StickyBar client:load items={site.nav} />
     <Welcome />
 
     <Section id="about" command="cat about.txt">
@@ -108,6 +110,7 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
     </Section>
 
     <Section id="skills" command="skills --list">
+      <TerminalWindow title="~/skills">
       <pre class="font-mono whitespace-pre-wrap">{
         skillGroups
           .map(([group, items], i) => {
@@ -123,29 +126,32 @@ const skillGroups = Object.entries(site.skills) as [string, string[]][];
           })
           .join('\n')
       }</pre>
+      </TerminalWindow>
     </Section>
 
     <Section id="contact" command="contact">
-      <ul class="flex flex-col gap-2">
-        <li class="flex items-center gap-3">
+      <TerminalWindow title="~/contact">
+      <ul class="flex flex-col gap-3">
+        <li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
           <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="email" />email:</span>
-          <a href={`mailto:${site.links.email}`} class="text-fg hover:text-glow underline">
+          <a href={`mailto:${site.links.email}`} class="text-fg hover:text-glow min-w-0 break-all underline">
             {site.links.email}
           </a>
         </li>
-        <li class="flex items-center gap-3">
+        <li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
           <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="github" />github:</span>
-          <a href={site.links.github} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+          <a href={site.links.github} target="_blank" rel="noreferrer" class="text-fg hover:text-glow min-w-0 break-all underline">
             {site.links.github}
           </a>
         </li>
-        <li class="flex items-center gap-3">
+        <li class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
           <span class="text-fg-dim flex w-32 items-center gap-2"><ContactIcon name="linkedin" />linkedin:</span>
-          <a href={site.links.linkedin} target="_blank" rel="noreferrer" class="text-fg hover:text-glow underline">
+          <a href={site.links.linkedin} target="_blank" rel="noreferrer" class="text-fg hover:text-glow min-w-0 break-all underline">
             {site.links.linkedin}
           </a>
         </li>
       </ul>
+      </TerminalWindow>
     </Section>
   </main>
 </Base>
