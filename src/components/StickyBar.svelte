@@ -15,6 +15,44 @@
   let active = $state('');
   let navEl: HTMLElement | undefined = $state();
 
+  // phone menu: floating bubble that opens a small terminal-style panel
+  let menuOpen = $state(false);
+  let menuEl: HTMLElement | undefined = $state();
+  let bubbleEl: HTMLButtonElement | undefined = $state();
+
+  $effect(() => {
+    document.body.dataset.menuOpen = menuOpen ? '1' : '';
+  });
+
+  // closing: leaving the welcome-free zone, or moving to another section
+  $effect(() => {
+    if (!visible) menuOpen = false;
+  });
+  $effect(() => {
+    active;
+    menuOpen = false;
+  });
+
+  function closeMenu(returnFocus = false) {
+    menuOpen = false;
+    if (returnFocus) bubbleEl?.focus();
+  }
+
+  function onWindowKeydown(event: KeyboardEvent) {
+    if (menuOpen && event.key === 'Escape') closeMenu(true);
+  }
+
+  function onWindowPointerdown(event: PointerEvent) {
+    if (!menuOpen) return;
+    const target = event.target as Node;
+    if (menuEl?.contains(target) || bubbleEl?.contains(target)) return;
+    closeMenu();
+  }
+
+  $effect(() => {
+    if (menuOpen) menuEl?.querySelector<HTMLElement>('a')?.focus();
+  });
+
   // keep the current section's link inside the horizontally scrollable bar
   $effect(() => {
     if (!navEl || !active) return;
@@ -52,10 +90,12 @@
   });
 </script>
 
+<svelte:window onkeydown={onWindowKeydown} onpointerdown={onWindowPointerdown} />
+
 <header
   inert={!visible}
   aria-hidden={!visible}
-  class="border-fg-dim bg-bg/90 fixed inset-x-0 top-0 z-40 border-b backdrop-blur transition-transform duration-300 {visible
+  class="border-fg-dim bg-bg/90 fixed inset-x-0 top-0 z-40 hidden border-b backdrop-blur transition-transform duration-300 lg:block {visible
     ? 'translate-y-0'
     : '-translate-y-full'}"
 >
@@ -79,3 +119,54 @@
     </div>
   </div>
 </header>
+
+<!-- phones and tablets: floating bubble instead of the top bar -->
+<div
+  inert={!visible}
+  aria-hidden={!visible}
+  class="fixed right-4 z-40 flex flex-col items-end gap-3 transition-opacity duration-300 lg:hidden {visible
+    ? 'opacity-100'
+    : 'pointer-events-none opacity-0'}"
+  style="bottom: calc(1rem + env(safe-area-inset-bottom));"
+>
+  {#if menuOpen}
+    <div
+      bind:this={menuEl}
+      id="section-menu"
+      role="dialog"
+      aria-label="Section menu"
+      class="border-fg-dim bg-bg w-56 border shadow-[0_0_18px_-6px_var(--color-fg-dim)]"
+    >
+      <div class="border-fg-dim text-fg-dim flex items-center justify-between border-b px-3 py-1.5 text-xs">
+        <span>~/menu</span>
+        <button type="button" onclick={() => closeMenu(true)} aria-label="Close menu" class="text-fg cursor-pointer">[x]</button>
+      </div>
+      <nav aria-label="Section navigation" class="flex flex-col py-1 text-sm">
+        {#each items as item}
+          <a
+            href={item.href}
+            aria-current={active === item.href ? 'true' : undefined}
+            class="px-3 py-2 transition-colors {active === item.href ? 'text-fg text-glow' : 'text-fg-dim hover:text-fg'}"
+          >
+            <span aria-hidden="true">{active === item.href ? '>' : '~/'}</span>{item.label}
+          </a>
+        {/each}
+      </nav>
+      <div class="border-fg-dim border-t px-3 py-2">
+        <ThemeToggle />
+      </div>
+    </div>
+  {/if}
+
+  <button
+    bind:this={bubbleEl}
+    type="button"
+    onclick={() => (menuOpen = !menuOpen)}
+    aria-expanded={menuOpen}
+    aria-controls="section-menu"
+    aria-label={menuOpen ? 'Close section menu' : 'Open section menu'}
+    class="border-fg bg-bg/90 text-fg text-glow flex size-12 cursor-pointer items-center justify-center border text-lg shadow-[0_0_14px_-4px_var(--color-fg)] backdrop-blur transition-colors hover:bg-fg hover:text-bg"
+  >
+    {menuOpen ? 'x' : '≡'}
+  </button>
+</div>

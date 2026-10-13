@@ -21,6 +21,9 @@
   function onKeydown(event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey || event.altKey || isTyping(event.target)) return;
 
+    // an open phone menu handles Esc itself (closes the menu) instead of jumping to the top
+    if (event.key === 'Escape' && document.body.dataset.menuOpen) return;
+
     if (event.key === 'Escape' || event.key === '0') {
       jumpTo('#welcome');
       return;
