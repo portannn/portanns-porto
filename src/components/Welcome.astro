@@ -2,11 +2,28 @@
 import { site } from '../data/site';
 import { asciiName } from '../data/ascii';
 import ThemeToggle from './ThemeToggle.svelte';
+import FaultyTerminal from './FaultyTerminal.svelte';
 
 const ascii = asciiName;
 ---
 
-<section id="welcome" class="relative flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+<section id="welcome" class="relative flex min-h-dvh flex-col items-center justify-center gap-8 overflow-hidden px-4 py-16 text-center">
+  <div class="absolute inset-0 -z-20">
+    <FaultyTerminal
+      client:load
+      brightness={0.22}
+      glow={0.25}
+      scanlineIntensity={0.15}
+      vignette={0.6}
+      curvature={0.05}
+      mouseStrength={0.12}
+    />
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background: radial-gradient(ellipse 60% 55% at center, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 65%, transparent) 55%, transparent 85%);"
+  >
+  </div>
   <div class="absolute top-4 right-4">
     <ThemeToggle client:load />
   </div>
