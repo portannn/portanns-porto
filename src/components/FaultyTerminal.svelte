@@ -620,6 +620,12 @@ void main() {
   onMount(() => {
     const container = containerEl;
     const canvas = canvasEl;
+
+    const isCoarseOrSmall =
+      (window.matchMedia?.('(pointer: coarse)').matches ?? false) ||
+      (window.matchMedia?.('(max-width: 768px)').matches ?? false);
+    if (isCoarseOrSmall) return undefined;
+
     const gl = canvas?.getContext('webgl2', {
       alpha: true,
       premultipliedAlpha: true,
