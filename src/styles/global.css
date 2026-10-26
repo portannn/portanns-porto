@@ -80,3 +80,32 @@ body {
     opacity: 0;
   }
 }
+
+/* theme switch: a scanline sweeps down the screen and the new theme is revealed behind it */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(theme-sweep) {
+  display: none;
+}
+
+::view-transition-new(theme-sweep) {
+  animation: none;
+}
+
+.theme-sweep-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 3px;
+  pointer-events: none;
+  view-transition-name: theme-sweep;
+  background: var(--color-fg);
+  box-shadow:
+    0 0 10px 2px var(--color-fg),
+    0 0 36px 10px color-mix(in srgb, var(--color-fg) 55%, transparent);
+}
