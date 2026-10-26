@@ -43,7 +43,11 @@
 
   function selectTab(i: number) {
     activeIndex = i;
-    collapse();
+    // if the details were open, keep them open on the newly selected project
+    if (expandedSlug && projects[i]) {
+      expandedSlug = projects[i].slug;
+      imageIndex = { ...imageIndex, [expandedSlug]: 0 };
+    }
   }
 
   function onTabKeydown(event: KeyboardEvent) {
@@ -129,12 +133,12 @@
           {@const images = p.images}
           {@const idx = ((imageIndex[p.slug] ?? 0) % images.length + images.length) % images.length}
           <div class="flex flex-col gap-2">
-            <div class="border-fg-dim border">
+            <div class="border-fg-dim flex justify-center border bg-black/60">
               <img
                 src={images[idx]}
                 alt={`${p.title} screenshot ${idx + 1} of ${images.length}`}
                 loading="lazy"
-                class="w-full"
+                class="block h-auto max-h-[65vh] w-auto max-w-full object-contain"
               />
             </div>
             {#if images.length > 1}

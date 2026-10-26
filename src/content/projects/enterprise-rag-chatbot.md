@@ -1,7 +1,7 @@
 ---
 title: Enterprise RAG Chatbot
 shortTitle: RAG Chatbot
-description: Internship Proof-of-Concept of an enterprise chatbot grounded in company documents. Sensitive prompts stay on an on-prem LLM, everything else can use commercial APIs, and low-confidence answers escalate to a human helpdesk. I built the RAG pipeline, chat history, PDF export, source citations and confidence scoring.
+description: Internship Proof-of-Concept of an enterprise chatbot grounded in company documents. Sensitive prompts stay on a local on-premise LLM, everything else can use commercial APIs, and low-confidence answers escalate to a human helpdesk.
 tags:
   - Python
   - FastAPI
