@@ -10,7 +10,7 @@ const projects = defineCollection({
     tags: z.array(z.string()),
     url: z.url().optional(),
     repo: z.url().optional(),
-    image: z.string().optional(),
+    images: z.array(z.string()).optional(),
     order: z.number(),
     draft: z.boolean().default(false)
   })

@@ -41,7 +41,7 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
       </div>
     </Section>
 
-    <Section id="projects" command="ls personal-projects/">
+    <Section id="projects" command="ls projects/">
       {
         projects.length > 0 ? (
           <ProjectsShowcase
@@ -53,7 +53,9 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
               description: project.data.description,
               tags: project.data.tags,
               url: project.data.url,
-              repo: project.data.repo
+              repo: project.data.repo,
+              images: project.data.images ?? [],
+              detailHtml: project.rendered?.html ?? ''
             }))}
           />
         ) : (

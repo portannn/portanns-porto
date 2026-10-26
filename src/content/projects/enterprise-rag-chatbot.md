@@ -11,6 +11,9 @@ tags:
   - Ollama
   - Docker
 repo: https://github.com/jonathankenan/enterprise-rag-chatbot
+images:
+  - /projects/catalyst-2.jpeg
+  - /projects/catalyst-1.jpeg
 order: 0
 draft: false
 ---
