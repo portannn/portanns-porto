@@ -17,6 +17,10 @@
     revealDirection?: 'start' | 'end' | 'center' | 'random';
     useOriginalCharsOnly?: boolean;
     characters?: string;
+    /** re-run the effect every N ms while the text is on screen (0 = once) */
+    repeatInterval?: number;
+    /** vary reveal direction, speed and replay timing between runs */
+    randomize?: boolean;
     class?: string;
     encryptedClass?: string;
   }
@@ -29,6 +33,8 @@
     revealDirection = 'start',
     useOriginalCharsOnly = false,
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+',
+    repeatInterval = 0,
+    randomize = false,
     class: className = '',
     encryptedClass = ''
   }: Props = $props();
@@ -46,17 +52,17 @@
     return typeof window !== 'undefined' && (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
   }
 
-  function revealOrder(): number[] {
+  function revealOrder(direction: typeof revealDirection): number[] {
     const order: number[] = [];
     chars.forEach((c, i) => {
       if (!isSpace(c)) order.push(i);
     });
-    if (revealDirection === 'end') return order.reverse();
-    if (revealDirection === 'center') {
+    if (direction === 'end') return order.reverse();
+    if (direction === 'center') {
       const mid = Math.floor(chars.length / 2);
       return order.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid));
     }
-    if (revealDirection === 'random') {
+    if (direction === 'random') {
       for (let i = order.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [order[i], order[j]] = [order[j], order[i]];
@@ -72,6 +78,8 @@
   let timer: ReturnType<typeof setInterval> | null = null;
 
   function start() {
+    if (timer) clearInterval(timer);
+    timer = null;
     const pool = buildPool();
     const randomGlyph = () => pool[Math.floor(Math.random() * pool.length)];
 
@@ -81,11 +89,16 @@
       return;
     }
 
+    // each run can reveal from a different side and at a slightly different pace
+    const directions = ['start', 'end', 'center', 'random'] as const;
+    const direction = randomize ? directions[Math.floor(Math.random() * directions.length)] : revealDirection;
+    const tick = Math.max(16, randomize ? speed * (0.6 + Math.random() * 0.9) : speed);
+
     revealed = chars.map((c) => isSpace(c));
     shown = chars.map((c, i) => (isSpace(c) ? c : randomGlyph()));
 
     if (sequential) {
-      const order = revealOrder();
+      const order = revealOrder(direction);
       let i = 0;
       timer = setInterval(() => {
         if (i < order.length) {
@@ -97,7 +110,7 @@
           if (timer) clearInterval(timer);
           timer = null;
         }
-      }, Math.max(16, speed));
+      }, tick);
     } else {
       let iteration = 0;
       timer = setInterval(() => {
@@ -109,7 +122,7 @@
           if (timer) clearInterval(timer);
           timer = null;
         }
-      }, Math.max(16, speed));
+      }, tick);
     }
   }
 
@@ -118,18 +131,35 @@
       start();
       return;
     }
+    let visible = false;
+    let started = false;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
+        visible = entries.some((entry) => entry.isIntersecting);
+        if (visible && !started) {
+          started = true;
           start();
-          observer.disconnect();
+          if (!repeatInterval) observer.disconnect();
         }
       },
       { threshold: 0.1 }
     );
     observer.observe(containerEl);
+
+    // replay on a loop, but only while the text is actually on screen
+    let loop: ReturnType<typeof setTimeout> | null = null;
+    const schedule = () => {
+      const jitter = randomize ? 0.65 + Math.random() * 0.8 : 1;
+      loop = setTimeout(() => {
+        if (visible) start();
+        schedule();
+      }, repeatInterval * jitter);
+    };
+    if (repeatInterval > 0) schedule();
+
     return () => {
       observer.disconnect();
+      if (loop) clearTimeout(loop);
       if (timer) clearInterval(timer);
     };
   });

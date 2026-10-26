@@ -33,7 +33,7 @@ const ascii = asciiName;
   </div>
 
   <p class="text-fg-dim text-base sm:text-lg">
-    &gt; <DecryptedText client:load text={site.role} speed={30} sequential revealDirection="start" /><span
+    &gt; <DecryptedText client:load text={site.role} speed={30} repeatInterval={4000} randomize sequential revealDirection="start" /><span
       class="cursor-blink">_</span
     >
   </p>
@@ -45,13 +45,13 @@ const ascii = asciiName;
           href={item.href}
           class="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:bg-fg focus-visible:text-bg block border px-5 py-2 text-base transition-colors"
         >
-          [{item.key}] {item.label}
+          <span class="pointer-coarse:hidden">[{item.key}] </span>{item.label}
         </a>
       ))
     }
   </nav>
 
-  <p class="text-fg-dim text-xs sm:text-sm">press 1-6 or click &middot; esc to return &middot; scroll &darr;</p>
+  <p class="text-fg-dim text-xs sm:text-sm"><span class="pointer-coarse:hidden">press 1-6 or click &middot; esc to return &middot; </span>scroll &darr;</p>
 </section>
 
 <style>
