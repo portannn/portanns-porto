@@ -1,17 +1,24 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import type { SocialName } from '../data/site';
+
 interface Props {
-  name: 'email' | 'github' | 'linkedin';
+  name: SocialName;
+  class?: string;
 }
 
-const { name } = Astro.props;
+const { name, class: className = 'size-5 shrink-0' } = Astro.props;
 
 const icons = {
   email: 'mdi:email-outline',
   github: 'simple-icons:github',
-  linkedin: 'simple-icons:linkedin'
+  linkedin: 'simple-icons:linkedin',
+  instagram: 'simple-icons:instagram',
+  x: 'simple-icons:x',
+  spotify: 'simple-icons:spotify',
+  youtube: 'simple-icons:youtube'
 } as const;
 ---
 
-<Icon name={icons[name]} class="size-5 shrink-0" aria-hidden="true" />
+<Icon name={icons[name]} class={className} aria-hidden="true" />

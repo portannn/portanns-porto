@@ -1,3 +1,5 @@
+export type SocialName = 'email' | 'github' | 'linkedin' | 'instagram' | 'x' | 'spotify' | 'youtube';
+
 export const site = {
   name: 'Triztan',
   tagline: 'building small, useful things for the web',
@@ -123,5 +125,11 @@ export const site = {
     email: 'kingswata@gmail.com',
     github: 'https://github.com/portannn',
     linkedin: 'https://linkedin.com/in/triztan-2005'
-  }
+  },
+  // icon row under the portrait; add an entry (and its icon in ContactIcon.astro) to show another one
+  socials: [
+    { name: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/portannn' },
+    { name: 'x', label: 'X', href: 'https://x.com/portannn' },
+    { name: 'spotify', label: 'Spotify', href: 'https://open.spotify.com/user/au46p2ieyfc53ewb42b4xl3it' }
+  ] as { name: SocialName; label: string; href: string }[]
 };

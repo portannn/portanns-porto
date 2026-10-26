@@ -27,6 +27,24 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
           <TerminalWindow title="~/me.jpg" flush>
             <Portrait src="/me.webp" alt="Formal portrait of Triztan" />
           </TerminalWindow>
+          <ul class="mt-3 flex w-0 min-w-full flex-wrap justify-center gap-x-1 gap-y-1" aria-label="Social links">
+            {
+              site.socials.map((social) => (
+                <li>
+                  <a
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    aria-label={social.label}
+                    title={social.label}
+                    class="text-fg-dim hover:text-fg hover:text-glow focus-visible:text-fg flex size-11 items-center justify-center transition-colors"
+                  >
+                    <ContactIcon name={social.name} class="size-7" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
         </div>
         <div class="flex flex-col gap-4 self-stretch">
           {site.about.map((line) => <p>{line}</p>)}
