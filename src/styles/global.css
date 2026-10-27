@@ -109,3 +109,65 @@ body {
     0 0 10px 2px var(--color-fg),
     0 0 36px 10px color-mix(in srgb, var(--color-fg) 55%, transparent);
 }
+
+/* boot intro: hidden unless the inline script in Base.astro flagged this visit */
+.boot {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--color-bg);
+  transition: opacity var(--boot-fade, 260ms) ease-out;
+}
+
+html[data-boot] .boot {
+  display: flex;
+}
+
+html[data-boot] {
+  overflow: hidden;
+}
+
+.boot.leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot-lines {
+  width: min(100%, 28rem);
+  min-height: 7rem;
+}
+
+/* CRT power-on: after the boot intro the welcome screen opens as a bright line that expands */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-crt] #welcome {
+    transform-origin: center;
+    animation: crt-on 800ms cubic-bezier(0.2, 0.7, 0.2, 1) 80ms both;
+  }
+}
+
+@keyframes crt-on {
+  0% {
+    transform: scale(0, 0.004);
+    filter: brightness(14);
+  }
+  30% {
+    transform: scale(1, 0.004);
+    filter: brightness(14);
+  }
+  62% {
+    transform: scale(1, 1.03);
+    filter: brightness(2.4);
+  }
+  82% {
+    transform: scale(1, 0.99);
+    filter: brightness(1.35);
+  }
+  100% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+  }
+}

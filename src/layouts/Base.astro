@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import BootIntro from '../components/BootIntro.svelte';
 
 interface Props {
   title?: string;
@@ -23,6 +24,11 @@ const { title =`${site.name} — ${site.role}`, description = site.description }
         var t = localStorage.getItem('theme');
         if (t === 'green' || t === 'amber') document.documentElement.dataset.theme = t;
         if (t === 'amber') document.querySelector('link[rel=icon][type="image/svg+xml"]').href = '/favicon-amber.svg';
+      } catch (e) {}
+      try {
+        if (!sessionStorage.getItem('booted') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-boot', '');
+        }
       } catch (e) {}
     </script>
 
@@ -56,6 +62,7 @@ const { title =`${site.name} — ${site.role}`, description = site.description }
   </head>
   <body>
     <div class="scanlines" aria-hidden="true"></div>
+    <BootIntro client:load />
     <slot />
   </body>
 </html>

@@ -21,6 +21,9 @@
   function onKeydown(event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey || event.altKey || isTyping(event.target)) return;
 
+    // the boot intro swallows the first key press (it only skips the intro)
+    if (document.documentElement.hasAttribute('data-boot')) return;
+
     // a modal (screenshot viewer) owns the keyboard while it is open
     if (document.querySelector('dialog[open]')) return;
 
