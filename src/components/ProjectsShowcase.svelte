@@ -31,6 +31,49 @@
     imageIndex = { ...imageIndex, [slug]: ((current + delta) % total + total) % total };
   }
 
+  // fullscreen screenshot viewer (native <dialog>: focus trap, Esc and backdrop come for free)
+  let viewerEl: HTMLDialogElement | undefined = $state();
+  let viewer: { slug: string; title: string; images: string[]; index: number } | null = $state(null);
+
+  function openViewer(p: Project, index: number) {
+    if (!p.images?.length) return;
+    viewer = { slug: p.slug, title: p.title, images: p.images, index };
+    document.body.style.overflow = 'hidden';
+    viewerEl?.showModal();
+  }
+
+  function closeViewer() {
+    viewerEl?.close();
+  }
+
+  function onViewerClose() {
+    document.body.style.overflow = '';
+    // leave the inline carousel on the screenshot that was being viewed
+    if (viewer) imageIndex = { ...imageIndex, [viewer.slug]: viewer.index };
+    viewer = null;
+  }
+
+  function stepViewer(delta: number) {
+    if (!viewer) return;
+    const total = viewer.images.length;
+    viewer.index = ((viewer.index + delta) % total + total) % total;
+  }
+
+  function onViewerKeydown(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      stepViewer(-1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      stepViewer(1);
+    }
+  }
+
+  function onViewerClick(event: MouseEvent) {
+    // a click on the backdrop lands on the <dialog> element itself
+    if (event.target === viewerEl) closeViewer();
+  }
+
   function collapse() {
     expandedSlug = null;
   }
@@ -134,13 +177,21 @@
           {@const idx = ((imageIndex[p.slug] ?? 0) % images.length + images.length) % images.length}
           <div class="flex flex-col gap-2">
             <div class="border-fg-dim flex justify-center border bg-black/60">
-              <img
-                src={images[idx]}
-                alt={`${p.title} screenshot ${idx + 1} of ${images.length}`}
-                loading="lazy"
-                class="block h-auto max-h-[65vh] w-auto max-w-full object-contain"
-              />
+              <button
+                type="button"
+                onclick={() => openViewer(p, idx)}
+                aria-label={`View ${p.title} screenshot ${idx + 1} fullscreen`}
+                class="block max-w-full cursor-zoom-in"
+              >
+                <img
+                  src={images[idx]}
+                  alt={`${p.title} screenshot ${idx + 1} of ${images.length}`}
+                  loading="lazy"
+                  class="block h-auto max-h-[65vh] w-auto max-w-full object-contain"
+                />
+              </button>
             </div>
+            <p class="text-fg-dim text-center text-xs">click image to enlarge</p>
             {#if images.length > 1}
               <div class="text-fg-dim flex items-center justify-center gap-4 text-sm">
                 <button
@@ -297,6 +348,53 @@
     {/each}
   </div>
 </div>
+
+<dialog
+  bind:this={viewerEl}
+  onclose={onViewerClose}
+  onclick={onViewerClick}
+  onkeydown={onViewerKeydown}
+  aria-label="Screenshot viewer"
+  class="border-fg bg-bg text-fg m-auto w-[min(96vw,1400px)] max-w-none border p-0 shadow-[0_0_40px_-8px_var(--color-fg)] backdrop:bg-black/85"
+>
+  {#if viewer}
+    {@const total = viewer.images.length}
+    <div class="border-fg-dim text-fg-dim flex items-center justify-between gap-3 border-b px-3 py-1.5 text-sm">
+      <span class="min-w-0 truncate">~/projects/{viewer.slug}/screenshot-{viewer.index + 1}.png</span>
+      <button
+        type="button"
+        onclick={closeViewer}
+        aria-label="Close viewer"
+        class="hover:text-fg shrink-0 cursor-pointer tracking-widest"
+      >
+        [x]
+      </button>
+    </div>
+
+    <div class="flex items-center justify-center bg-black/60 p-2 sm:p-4">
+      <img
+        src={viewer.images[viewer.index]}
+        alt={`${viewer.title} screenshot ${viewer.index + 1} of ${total}`}
+        class="block h-auto max-h-[78vh] w-auto max-w-full object-contain"
+      />
+    </div>
+
+    <div class="border-fg-dim text-fg-dim flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t px-3 py-2 text-sm">
+      {#if total > 1}
+        <button type="button" onclick={() => stepViewer(-1)} aria-label="Previous screenshot" class="hover:text-fg cursor-pointer px-1">
+          [&lt;]
+        </button>
+        <span aria-live="polite">{viewer.index + 1}/{total}</span>
+        <button type="button" onclick={() => stepViewer(1)} aria-label="Next screenshot" class="hover:text-fg cursor-pointer px-1">
+          [&gt;]
+        </button>
+      {/if}
+      <span class="pointer-coarse:hidden text-xs">
+        {total > 1 ? '←/→ switch · ' : ''}esc to close
+      </span>
+    </div>
+  {/if}
+</dialog>
 
 <style>
   .detail-prose :global(p) {
