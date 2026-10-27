@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import TerminalWindow from '../components/TerminalWindow.astro';
+import DecryptedText from '../components/DecryptedText.svelte';
+import ThemeToggle from '../components/ThemeToggle.svelte';
+---
+
+<Base title="404 — page not found" description="This page does not exist.">
+  <main class="relative flex min-h-dvh items-center justify-center px-4 py-16">
+    <div class="absolute top-4 right-4">
+      <ThemeToggle client:load />
+    </div>
+    <div class="w-full max-w-xl">
+      <TerminalWindow title="~/404">
+        <p class="font-heading text-fg text-glow text-6xl sm:text-8xl" aria-hidden="true">404</p>
+        <p class="text-fg mt-2 text-lg sm:text-xl">
+          <span class="text-fg-dim" aria-hidden="true">$</span>
+          <DecryptedText client:load text="cd: no such file or directory" speed={35} repeatInterval={4000} randomize /><span
+            class="cursor-blink">_</span
+          >
+        </p>
+        <p class="text-fg-dim mt-4 text-sm sm:text-base">The page you asked for does not exist, or it moved.</p>
+        <a
+          href="/"
+          class="border-fg text-fg hover:bg-fg hover:text-bg focus-visible:bg-fg focus-visible:text-bg mt-6 inline-flex w-fit items-center gap-2 border px-4 py-2 text-sm transition-colors"
+        >
+          <span aria-hidden="true">$</span> cd ~
+        </a>
+      </TerminalWindow>
+    </div>
+  </main>
+</Base>

@@ -2,7 +2,7 @@ export type SocialName = 'email' | 'github' | 'linkedin' | 'instagram' | 'x' | '
 
 export const site = {
   name: 'Triztan',
-  tagline: 'building small, useful things for the web',
+  tagline: 'an aspiring ai & software engineer',
   role: 'ai & software engineering',
   description:
     "Triztan's portfolio, an aspiring ai & software engineer building things for the web.",

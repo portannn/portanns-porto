@@ -15,6 +15,8 @@
   function apply(next: Theme) {
     theme = next;
     document.documentElement.dataset.theme = next;
+    const icon = document.querySelector<HTMLLinkElement>('link[rel=icon][type="image/svg+xml"]');
+    if (icon) icon.href = next === 'amber' ? '/favicon-amber.svg' : '/favicon.svg';
     try {
       localStorage.setItem('theme', next);
     } catch {
@@ -65,7 +67,7 @@
 <button
   type="button"
   onclick={toggle}
-  aria-label={`Switch to ${theme === 'green' ? 'amber' : 'green'} theme`}
+  aria-label={`theme: ${theme}, switch to ${theme === 'green' ? 'amber' : 'green'}`}
   class="border-fg-dim text-fg-dim hover:border-fg hover:text-fg cursor-pointer border px-2 py-1 text-xs transition-colors sm:text-sm"
 >
   <span class="hidden sm:inline">[theme: {theme}]</span><span class="sm:hidden">[{theme}]</span>
